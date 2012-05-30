@@ -13,7 +13,7 @@ story_remain = story
 phrases = []
 
 #find the first placeholder in the remaining story and save it in the phrases array
-while /\(\(([^\)]*)\)\)/ =~ story_remain
+while /\(\((.*?)\)\)/ =~ story_remain
 	phrases[phrases.length] = $1
 	story_remain = $' # remove the part of the story already scanned
 end
