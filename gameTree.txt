@@ -1,0 +1,11 @@
+qIs it a mammal?
+qCan it climb trees?
+qCan it eat people?
+atiger
+acat
+qCan it swim?
+adolphin
+adog
+qIs it a reptile?
+alizard
+apigeon
