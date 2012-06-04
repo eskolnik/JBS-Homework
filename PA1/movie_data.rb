@@ -1,13 +1,17 @@
 #load a data set into a list of review objects
 
 class MovieData
-	attr_accessor :review_list, :user_list, :movie_list
+	attr_accessor :file :review_list, :user_list, :movie_list
+
+	def initialize(file)
+		@file = file
+	end
 
 	# when a MovieData object is initialized, lists of review objects, movie ids and User objects are created
-	def initialize(file)
+	def load_data()
 
 		#create a list of review objects
-		@review_list = file.each_line.collect {|line| Review.new(line.split.collect {|x| x.to_i})} #converts each entry to an integer before storing
+		@review_list = @file.each_line.collect {|line| Review.new(line.split.collect {|x| x.to_i})} #converts each entry to an integer before storing
 
 		#Users are stored in a hash with the user ids as keys
 		@user_list = Hash.new
@@ -70,11 +74,12 @@ class MovieData
 	end
 
 	class Movie
-		attr_accessor :movie_id, :reviews, :popularity
+		attr_accessor :movie_id, :name, :reviews, :popularity
 
-		def initialize (movie_id)
+		def initialize (movie_id, name)
 			@movie_id = movie_id
 			@reviews = []
+			@name = name
 		end
 
 		def add_review (review)
@@ -91,13 +96,26 @@ class MovieData
 		end
 
 		def to_s
-			return "ID: #{@movie_id}, Popularity: #{@popularity}"
+			return "#{@name}: Popularity = #{@popularity}"
 		end
 	end
+
+	def popularity_list
+		return @movie_list.keys.sort_by {|movie| movie.popularity}
+	end
+
+	def print_popularity_list
+		popularity_list.collect {|id| puts @movie_list[id]}
+	end
+
+	def popularity(movie_id)
+		return @movie_list[movie_id].popularity
 
 end
 
 file = File.open("ml-100k/testset.data", 'r')
 data = MovieData.new(file)
-puts data.review_list[0].rating
-puts data.popularity(data.review_list[0].movie_id)
+data.load_data
+
+data.print_popularity_list
+
